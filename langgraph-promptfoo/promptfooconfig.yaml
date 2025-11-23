@@ -1,0 +1,35 @@
+# Description of this evaluation job
+description: 'LangGraph Create Blog Agent Evaluation'
+
+# List of input prompts to test the provider with
+prompts:
+  - '{{input_prompt}}'
+
+# Provider configuration
+providers:
+  - id: file://./provider.py
+    label: Create Blog Agent
+
+# Default test assertions
+defaultTest:
+  assert:
+    - type: is-json
+      value:
+        type: object
+        properties:
+          query:
+            type: string
+          raw_info:
+            type: string
+          summary:
+            type: string
+        required: ['title', 'outline', 'content']
+
+# Specific test cases
+tests:
+  - description: 'Create a blog test'
+    vars:
+      input_prompt: 'latest AI research trends'
+    assert:
+      - type: python
+        value: "'content' in output"
